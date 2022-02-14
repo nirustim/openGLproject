@@ -28,7 +28,23 @@ void App::Run(){
   Loop();
 }
 
-void App::Load(){}
+void App::Load(){
+  //build and compile shader program
+
+  //vertex shader
+  unsigned int vertexShader;
+  vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+  glCompileShader(vertexShader);
+  //checking for errors in shader compilation
+  int success;
+  char infoLog[512];
+  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+  if(!success){
+    glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+  }
+}
 void App::Loop()
 {
   while(appState == AppState::ON)
