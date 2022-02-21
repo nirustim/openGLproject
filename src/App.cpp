@@ -82,9 +82,12 @@ void App::Load()
 
   float vertices[] = {
       // first triangle
-      -.5f, -.5f, 0.0f, // left
-      .5f, -.5f, 0.0f,  // right
-      0.0f, 0.0f, 0.0f, // top
+      -0.5f, -0.5f, 0.0f, // left
+      0.5f, -0.5f, 0.0f,  // right
+      0.0f, 0.5f, 0.0f,   // top
+      -0.25f, 0.f, 0.0f,  // left middle
+      0.0f, -0.5f, 0.0f,  // center bottom
+      0.25f, 0.0f, 0.0f,  // right middle
   };
 
   // VBO VAO
@@ -102,6 +105,8 @@ void App::Load()
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   glBindVertexArray(0); // unbind vertex
+
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 void App::Loop()
 {
@@ -122,10 +127,18 @@ void App::Draw()
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  // drawing first triangle
+  // take care to activate shader program before calling to uniforms
   glUseProgram(shaderProgram);
+
+  // update shader uniform
+  double timeValue = SDL_GetTicks() / 1000;
+  float greenValue = static_cast<float>(sin(timeValue) / 2.0 + 0.5);
+  int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+  glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1);
+
+  // rendering triangle to window
   glBindVertexArray(VAO);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  glDrawArrays(GL_TRIANGLES, 0, 6);
   glBindVertexArray(0);
 }
 void App::LateUpdate() {}
