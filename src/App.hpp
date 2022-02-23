@@ -5,6 +5,7 @@
 #include "Engine/Engine.hpp"
 #include "Engine/Debug.hpp"
 #include "Engine/Window.hpp"
+#include "Engine/Shader.hpp"
 
 enum AppState
 {
@@ -32,6 +33,8 @@ private:
 	AppState appState = AppState::OFF;
 
 	Engine::Window window;
+
+	Engine::Shader shader;
 
 	// move outside to external class later
 	unsigned int shaderProgram;
